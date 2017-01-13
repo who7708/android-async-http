@@ -91,8 +91,9 @@ public class RequestHandle {
 
     public boolean shouldBeGarbageCollected() {
         boolean should = isCancelled() || isFinished();
-        if (should)
+        if (should) {
             request.clear();
+        }
         return should;
     }
 
@@ -114,8 +115,9 @@ public class RequestHandle {
      */
     public RequestHandle setTag(Object tag) {
         AsyncHttpRequest _request = request.get();
-        if (_request != null)
+        if (_request != null) {
             _request.setRequestTag(tag);
+        }
         return this;
     }
 }

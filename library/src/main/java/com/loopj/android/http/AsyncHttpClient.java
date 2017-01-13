@@ -86,7 +86,6 @@ import cz.msebera.android.httpclient.protocol.ExecutionContext;
 import cz.msebera.android.httpclient.protocol.HttpContext;
 import cz.msebera.android.httpclient.protocol.SyncBasicHttpContext;
 
-
 /**
  * The AsyncHttpClient can be used to make asynchronous GET, POST, PUT and DELETE HTTP requests in
  * your Android applications. Requests can be made with additional parameters by passing a {@link
@@ -214,11 +213,7 @@ public class AsyncHttpClient {
                 for (String header : clientHeaderMap.keySet()) {
                     if (request.containsHeader(header)) {
                         Header overwritten = request.getFirstHeader(header);
-                        log.d(LOG_TAG,
-                                String.format("Headers were overwritten! (%s | %s) overwrites (%s | %s)",
-                                        header, clientHeaderMap.get(header),
-                                        overwritten.getName(), overwritten.getValue())
-                        );
+                        log.d(LOG_TAG, String.format("Headers were overwritten! (%s | %s) overwrites (%s | %s)", header, clientHeaderMap.get(header), overwritten.getName(), overwritten.getValue()));
 
                         //remove the overwritten header
                         request.removeHeader(overwritten);
@@ -256,8 +251,7 @@ public class AsyncHttpClient {
                 context.setAttribute(ClientContext.AUTHSCHEME_REGISTRY, authSchemeRegistry);
 
                 AuthState authState = (AuthState) context.getAttribute(ClientContext.TARGET_AUTH_STATE);
-                CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(
-                        ClientContext.CREDS_PROVIDER);
+                CredentialsProvider credsProvider = (CredentialsProvider) context.getAttribute(ClientContext.CREDS_PROVIDER);
                 HttpHost targetHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
 
                 if (authState.getAuthScheme() == null) {
@@ -336,8 +330,9 @@ public class AsyncHttpClient {
      * @return encoded url if requested with params appended if any available
      */
     public static String getUrlWithQueryString(boolean shouldEncodeUrl, String url, RequestParams params) {
-        if (url == null)
+        if (url == null) {
             return null;
+        }
 
         if (shouldEncodeUrl) {
             try {
@@ -375,15 +370,18 @@ public class AsyncHttpClient {
      * @throws java.io.IOException if read from inputStream fails
      */
     public static boolean isInputStreamGZIPCompressed(final PushbackInputStream inputStream) throws IOException {
-        if (inputStream == null)
+        if (inputStream == null) {
             return false;
+        }
 
         byte[] signature = new byte[2];
         int count = 0;
         try {
             while (count < 2) {
                 int readCount = inputStream.read(signature, count, 2 - count);
-                if (readCount < 0) return false;
+                if (readCount < 0) {
+                    return false;
+                }
                 count = count + readCount;
             }
         } finally {
@@ -656,8 +654,9 @@ public class AsyncHttpClient {
      * @param maxConnections maximum parallel connections, must be at least 1
      */
     public void setMaxConnections(int maxConnections) {
-        if (maxConnections < 1)
+        if (maxConnections < 1) {
             maxConnections = DEFAULT_MAX_CONNECTIONS;
+        }
         this.maxConnections = maxConnections;
         final HttpParams httpParams = this.httpClient.getParams();
         ConnManagerParams.setMaxConnectionsPerRoute(httpParams, new ConnPerRouteBean(this.maxConnections));
@@ -743,9 +742,7 @@ public class AsyncHttpClient {
      * @param password the password
      */
     public void setProxy(String hostname, int port, String username, String password) {
-        httpClient.getCredentialsProvider().setCredentials(
-                new AuthScope(hostname, port),
-                new UsernamePasswordCredentials(username, password));
+        httpClient.getCredentialsProvider().setCredentials(new AuthScope(hostname, port), new UsernamePasswordCredentials(username, password));
         final HttpHost proxy = new HttpHost(hostname, port);
         final HttpParams httpParams = this.httpClient.getParams();
         httpParams.setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
@@ -807,7 +804,6 @@ public class AsyncHttpClient {
     public void setBearerAuth(String token) {
         setBearerAuth(token, AuthScope.ANY, false);
     }
-
 
     /**
      * Sets bearer authentication for the request. You should pass in your AuthScope for security. It
@@ -981,8 +977,9 @@ public class AsyncHttpClient {
         for (List<RequestHandle> requestList : requestMap.values()) {
             if (requestList != null) {
                 for (RequestHandle requestHandle : requestList) {
-                    if (TAG.equals(requestHandle.getTag()))
+                    if (TAG.equals(requestHandle.getTag())) {
                         requestHandle.cancel(mayInterruptIfRunning);
+                    }
                 }
             }
         }
@@ -1071,9 +1068,10 @@ public class AsyncHttpClient {
      */
     public RequestHandle head(Context context, String url, Header[] headers, RequestParams params, ResponseHandlerInterface responseHandler) {
         HttpUriRequest request = new HttpHead(getUrlWithQueryString(isUrlEncodingEnabled, url, params));
-        if (headers != null) request.setHeaders(headers);
-        return sendRequest(httpClient, httpContext, request, null, responseHandler,
-                context);
+        if (headers != null) {
+            request.setHeaders(headers);
+        }
+        return sendRequest(httpClient, httpContext, request, null, responseHandler, context);
     }
 
     /**
@@ -1141,9 +1139,10 @@ public class AsyncHttpClient {
      */
     public RequestHandle get(Context context, String url, Header[] headers, RequestParams params, ResponseHandlerInterface responseHandler) {
         HttpUriRequest request = new HttpGet(getUrlWithQueryString(isUrlEncodingEnabled, url, params));
-        if (headers != null) request.setHeaders(headers);
-        return sendRequest(httpClient, httpContext, request, null, responseHandler,
-                context);
+        if (headers != null) {
+            request.setHeaders(headers);
+        }
+        return sendRequest(httpClient, httpContext, request, null, responseHandler, context);
     }
 
     /**
@@ -1232,13 +1231,15 @@ public class AsyncHttpClient {
      * @param responseHandler the response handler instance that should handle the response.
      * @return RequestHandle of future request process
      */
-    public RequestHandle post(Context context, String url, Header[] headers, RequestParams params, String contentType,
-                              ResponseHandlerInterface responseHandler) {
+    public RequestHandle post(Context context, String url, Header[] headers, RequestParams params, String contentType, ResponseHandlerInterface responseHandler) {
         HttpEntityEnclosingRequestBase request = new HttpPost(getURI(url));
-        if (params != null) request.setEntity(paramsToEntity(params, responseHandler));
-        if (headers != null) request.setHeaders(headers);
-        return sendRequest(httpClient, httpContext, request, contentType,
-                responseHandler, context);
+        if (params != null) {
+            request.setEntity(paramsToEntity(params, responseHandler));
+        }
+        if (headers != null) {
+            request.setHeaders(headers);
+        }
+        return sendRequest(httpClient, httpContext, request, contentType, responseHandler, context);
     }
 
     /**
@@ -1256,10 +1257,11 @@ public class AsyncHttpClient {
      * @param responseHandler the response handler instance that should handle the response.
      * @return RequestHandle of future request process
      */
-    public RequestHandle post(Context context, String url, Header[] headers, HttpEntity entity, String contentType,
-                              ResponseHandlerInterface responseHandler) {
+    public RequestHandle post(Context context, String url, Header[] headers, HttpEntity entity, String contentType, ResponseHandlerInterface responseHandler) {
         HttpEntityEnclosingRequestBase request = addEntityToRequestBase(new HttpPost(getURI(url)), entity);
-        if (headers != null) request.setHeaders(headers);
+        if (headers != null) {
+            request.setHeaders(headers);
+        }
         return sendRequest(httpClient, httpContext, request, contentType, responseHandler, context);
     }
 
@@ -1334,7 +1336,9 @@ public class AsyncHttpClient {
      */
     public RequestHandle put(Context context, String url, Header[] headers, HttpEntity entity, String contentType, ResponseHandlerInterface responseHandler) {
         HttpEntityEnclosingRequestBase request = addEntityToRequestBase(new HttpPut(getURI(url)), entity);
-        if (headers != null) request.setHeaders(headers);
+        if (headers != null) {
+            request.setHeaders(headers);
+        }
         return sendRequest(httpClient, httpContext, request, contentType, responseHandler, context);
     }
 
@@ -1412,7 +1416,9 @@ public class AsyncHttpClient {
      */
     public RequestHandle patch(Context context, String url, Header[] headers, HttpEntity entity, String contentType, ResponseHandlerInterface responseHandler) {
         HttpEntityEnclosingRequestBase request = addEntityToRequestBase(new HttpPatch(getURI(url)), entity);
-        if (headers != null) request.setHeaders(headers);
+        if (headers != null) {
+            request.setHeaders(headers);
+        }
         return sendRequest(httpClient, httpContext, request, contentType, responseHandler, context);
     }
 
@@ -1453,7 +1459,9 @@ public class AsyncHttpClient {
      */
     public RequestHandle delete(Context context, String url, Header[] headers, ResponseHandlerInterface responseHandler) {
         final HttpDelete delete = new HttpDelete(getURI(url));
-        if (headers != null) delete.setHeaders(headers);
+        if (headers != null) {
+            delete.setHeaders(headers);
+        }
         return sendRequest(httpClient, httpContext, delete, null, responseHandler, context);
     }
 
@@ -1482,7 +1490,9 @@ public class AsyncHttpClient {
      */
     public RequestHandle delete(Context context, String url, Header[] headers, RequestParams params, ResponseHandlerInterface responseHandler) {
         HttpDelete httpDelete = new HttpDelete(getUrlWithQueryString(isUrlEncodingEnabled, url, params));
-        if (headers != null) httpDelete.setHeaders(headers);
+        if (headers != null) {
+            httpDelete.setHeaders(headers);
+        }
         return sendRequest(httpClient, httpContext, httpDelete, null, responseHandler, context);
     }
 

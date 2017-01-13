@@ -47,5 +47,4 @@ public interface LogInterface {
 
     void wtf(String tag, String msg, Throwable t);
 
-
 }

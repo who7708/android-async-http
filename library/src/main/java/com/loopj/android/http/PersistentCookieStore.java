@@ -82,8 +82,9 @@ public class PersistentCookieStore implements CookieStore {
 
     @Override
     public void addCookie(Cookie cookie) {
-        if (omitNonPersistentCookies && !cookie.isPersistent())
+        if (omitNonPersistentCookies && !cookie.isPersistent()) {
             return;
+        }
         String name = cookie.getName() + cookie.getDomain();
 
         // Save cookie into local store, or remove if expired
@@ -178,8 +179,9 @@ public class PersistentCookieStore implements CookieStore {
      * @return cookie encoded as String
      */
     protected String encodeCookie(SerializableCookie cookie) {
-        if (cookie == null)
+        if (cookie == null) {
             return null;
+        }
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(os);

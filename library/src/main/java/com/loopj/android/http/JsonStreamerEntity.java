@@ -42,8 +42,7 @@ public class JsonStreamerEntity implements HttpEntity {
 
     private static final String LOG_TAG = "JsonStreamerEntity";
 
-    private static final UnsupportedOperationException ERR_UNSUPPORTED =
-            new UnsupportedOperationException("Unsupported operation in this implementation.");
+    private static final UnsupportedOperationException ERR_UNSUPPORTED = new UnsupportedOperationException("Unsupported operation in this implementation.");
 
     // Size of the byte-array buffer used in I/O streams.
     private static final int BUFFER_SIZE = 4096;
@@ -53,14 +52,8 @@ public class JsonStreamerEntity implements HttpEntity {
     private static final byte[] STREAM_NAME = escape("name");
     private static final byte[] STREAM_TYPE = escape("type");
     private static final byte[] STREAM_CONTENTS = escape("contents");
-    private static final Header HEADER_JSON_CONTENT =
-            new BasicHeader(
-                    AsyncHttpClient.HEADER_CONTENT_TYPE,
-                    RequestParams.APPLICATION_JSON);
-    private static final Header HEADER_GZIP_ENCODING =
-            new BasicHeader(
-                    AsyncHttpClient.HEADER_CONTENT_ENCODING,
-                    AsyncHttpClient.ENCODING_GZIP);
+    private static final Header HEADER_JSON_CONTENT = new BasicHeader(AsyncHttpClient.HEADER_CONTENT_TYPE, RequestParams.APPLICATION_JSON);
+    private static final Header HEADER_GZIP_ENCODING = new BasicHeader(AsyncHttpClient.HEADER_CONTENT_ENCODING, AsyncHttpClient.ENCODING_GZIP);
     // Buffer used for reading from input streams.
     private final byte[] buffer = new byte[BUFFER_SIZE];
     // JSON data and associated meta-data to be uploaded.
@@ -76,9 +69,7 @@ public class JsonStreamerEntity implements HttpEntity {
     public JsonStreamerEntity(ResponseHandlerInterface progressHandler, boolean useGZipCompression, String elapsedField) {
         this.progressHandler = progressHandler;
         this.contentEncoding = useGZipCompression ? HEADER_GZIP_ENCODING : null;
-        this.elapsedField = TextUtils.isEmpty(elapsedField)
-                ? null
-                : escape(elapsedField);
+        this.elapsedField = TextUtils.isEmpty(elapsedField) ? null : escape(elapsedField);
     }
 
     // Curtosy of Simple-JSON: https://goo.gl/XoW8RF
@@ -203,9 +194,7 @@ public class JsonStreamerEntity implements HttpEntity {
 
         // Use GZIP compression when sending streams, otherwise just use
         // a buffered output stream to speed things up a bit.
-        OutputStream os = contentEncoding != null
-                ? new GZIPOutputStream(out, BUFFER_SIZE)
-                : out;
+        OutputStream os = contentEncoding != null ? new GZIPOutputStream(out, BUFFER_SIZE) : out;
 
         // Always send a JSON object.
         os.write('{');
@@ -303,8 +292,7 @@ public class JsonStreamerEntity implements HttpEntity {
         AsyncHttpClient.silentCloseOutputStream(os);
     }
 
-    private void writeToFromStream(OutputStream os, RequestParams.StreamWrapper entry)
-            throws IOException {
+    private void writeToFromStream(OutputStream os, RequestParams.StreamWrapper entry) throws IOException {
 
         // Send the meta data.
         writeMetaData(os, entry.name, entry.contentType);
@@ -312,8 +300,7 @@ public class JsonStreamerEntity implements HttpEntity {
         int bytesRead;
 
         // Upload the file's contents in Base64.
-        Base64OutputStream bos =
-                new Base64OutputStream(os, Base64.NO_CLOSE | Base64.NO_WRAP);
+        Base64OutputStream bos = new Base64OutputStream(os, Base64.NO_CLOSE | Base64.NO_WRAP);
 
         // Read from input stream until no more data's left to read.
         while ((bytesRead = entry.inputStream.read(buffer)) != -1) {
@@ -333,8 +320,7 @@ public class JsonStreamerEntity implements HttpEntity {
         }
     }
 
-    private void writeToFromFile(OutputStream os, RequestParams.FileWrapper wrapper)
-            throws IOException {
+    private void writeToFromFile(OutputStream os, RequestParams.FileWrapper wrapper) throws IOException {
 
         // Send the meta data.
         writeMetaData(os, wrapper.file.getName(), wrapper.contentType);
@@ -346,8 +332,7 @@ public class JsonStreamerEntity implements HttpEntity {
         FileInputStream in = new FileInputStream(wrapper.file);
 
         // Upload the file's contents in Base64.
-        Base64OutputStream bos =
-                new Base64OutputStream(os, Base64.NO_CLOSE | Base64.NO_WRAP);
+        Base64OutputStream bos = new Base64OutputStream(os, Base64.NO_CLOSE | Base64.NO_WRAP);
 
         // Read from file until no more data's left to read.
         while ((bytesRead = in.read(buffer)) != -1) {

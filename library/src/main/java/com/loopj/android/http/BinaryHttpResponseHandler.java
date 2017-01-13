@@ -53,12 +53,7 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
 
     private static final String LOG_TAG = "BinaryHttpRH";
 
-    private String[] mAllowedContentTypes = new String[]{
-            RequestParams.APPLICATION_OCTET_STREAM,
-            "image/jpeg",
-            "image/png",
-            "image/gif"
-    };
+    private String[] mAllowedContentTypes = new String[]{RequestParams.APPLICATION_OCTET_STREAM, "image/jpeg", "image/png", "image/gif"};
 
     /**
      * Creates a new BinaryHttpResponseHandler
@@ -120,15 +115,7 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
         Header[] contentTypeHeaders = response.getHeaders(AsyncHttpClient.HEADER_CONTENT_TYPE);
         if (contentTypeHeaders.length != 1) {
             //malformed/ambiguous HTTP Header, ABORT!
-            sendFailureMessage(
-                    status.getStatusCode(),
-                    response.getAllHeaders(),
-                    null,
-                    new HttpResponseException(
-                            status.getStatusCode(),
-                            "None, or more than one, Content-Type Header found!"
-                    )
-            );
+            sendFailureMessage(status.getStatusCode(), response.getAllHeaders(), null, new HttpResponseException(status.getStatusCode(), "None, or more than one, Content-Type Header found!"));
             return;
         }
         Header contentTypeHeader = contentTypeHeaders[0];
@@ -144,15 +131,7 @@ public abstract class BinaryHttpResponseHandler extends AsyncHttpResponseHandler
         }
         if (!foundAllowedContentType) {
             //Content-Type not in allowed list, ABORT!
-            sendFailureMessage(
-                    status.getStatusCode(),
-                    response.getAllHeaders(),
-                    null,
-                    new HttpResponseException(
-                            status.getStatusCode(),
-                            "Content-Type (" + contentTypeHeader.getValue() + ") not allowed!"
-                    )
-            );
+            sendFailureMessage(status.getStatusCode(), response.getAllHeaders(), null, new HttpResponseException(status.getStatusCode(), "Content-Type (" + contentTypeHeader.getValue() + ") not allowed!"));
             return;
         }
         super.sendResponseMessage(response);

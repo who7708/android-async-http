@@ -38,7 +38,6 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
 
     private static final String LOG_TAG = "JsonHttpRH";
 
-
     private boolean useRFC5179CompatibilityMode = true;
 
     /**
@@ -243,8 +242,9 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
      * @throws org.json.JSONException exception if thrown while parsing JSON
      */
     protected Object parseResponse(byte[] responseBody) throws JSONException {
-        if (null == responseBody)
+        if (null == responseBody) {
             return null;
+        }
         Object result = null;
         //trim the string to prevent start with blank, and test if the string is valid JSON, because the parser don't do this :(. If JSON is not valid this will return null
         String jsonString = getResponseString(responseBody, getCharset());
@@ -257,8 +257,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
             } else {
                 // Check if the string is an JSONObject style {} or JSONArray style []
                 // If not we consider this as a string
-                if ((jsonString.startsWith("{") && jsonString.endsWith("}"))
-                        || jsonString.startsWith("[") && jsonString.endsWith("]")) {
+                if ((jsonString.startsWith("{") && jsonString.endsWith("}")) || jsonString.startsWith("[") && jsonString.endsWith("]")) {
                     result = new JSONTokener(jsonString).nextValue();
                 }
                 // Check if this is a String "my String value" and remove quote

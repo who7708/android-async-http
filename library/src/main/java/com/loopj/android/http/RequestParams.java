@@ -92,11 +92,9 @@ import cz.msebera.android.httpclient.protocol.HTTP;
  */
 public class RequestParams implements Serializable {
 
-    public final static String APPLICATION_OCTET_STREAM =
-            "application/octet-stream";
+    public final static String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
-    public final static String APPLICATION_JSON =
-            "application/json";
+    public final static String APPLICATION_JSON = "application/json";
 
     protected final static String LOG_TAG = "RequestParams";
     protected final ConcurrentHashMap<String, String> urlParams = new ConcurrentHashMap<String, String>();
@@ -155,8 +153,9 @@ public class RequestParams implements Serializable {
      */
     public RequestParams(Object... keysAndValues) {
         int len = keysAndValues.length;
-        if (len % 2 != 0)
+        if (len % 2 != 0) {
             throw new IllegalArgumentException("Supplied arguments must be even");
+        }
         for (int i = 0; i < len; i += 2) {
             String key = String.valueOf(keysAndValues[i]);
             String val = String.valueOf(keysAndValues[i + 1]);
@@ -426,8 +425,9 @@ public class RequestParams implements Serializable {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (ConcurrentHashMap.Entry<String, String> entry : urlParams.entrySet()) {
-            if (result.length() > 0)
+            if (result.length() > 0) {
                 result.append("&");
+            }
 
             result.append(entry.getKey());
             result.append("=");
@@ -435,8 +435,9 @@ public class RequestParams implements Serializable {
         }
 
         for (ConcurrentHashMap.Entry<String, StreamWrapper> entry : streamParams.entrySet()) {
-            if (result.length() > 0)
+            if (result.length() > 0) {
                 result.append("&");
+            }
 
             result.append(entry.getKey());
             result.append("=");
@@ -444,8 +445,9 @@ public class RequestParams implements Serializable {
         }
 
         for (ConcurrentHashMap.Entry<String, FileWrapper> entry : fileParams.entrySet()) {
-            if (result.length() > 0)
+            if (result.length() > 0) {
                 result.append("&");
+            }
 
             result.append(entry.getKey());
             result.append("=");
@@ -453,8 +455,9 @@ public class RequestParams implements Serializable {
         }
 
         for (ConcurrentHashMap.Entry<String, List<FileWrapper>> entry : fileArrayParams.entrySet()) {
-            if (result.length() > 0)
+            if (result.length() > 0) {
                 result.append("&");
+            }
 
             result.append(entry.getKey());
             result.append("=");
@@ -463,8 +466,9 @@ public class RequestParams implements Serializable {
 
         List<BasicNameValuePair> params = getParamsList(null, urlParamsWithObjects);
         for (BasicNameValuePair kv : params) {
-            if (result.length() > 0)
+            if (result.length() > 0) {
                 result.append("&");
+            }
 
             result.append(kv.getName());
             result.append("=");
@@ -524,10 +528,7 @@ public class RequestParams implements Serializable {
     }
 
     private HttpEntity createJsonStreamerEntity(ResponseHandlerInterface progressHandler) throws IOException {
-        JsonStreamerEntity entity = new JsonStreamerEntity(
-                progressHandler,
-                !fileParams.isEmpty() || !streamParams.isEmpty(),
-                elapsedFieldInJsonStreamer);
+        JsonStreamerEntity entity = new JsonStreamerEntity(progressHandler, !fileParams.isEmpty() || !streamParams.isEmpty(), elapsedFieldInJsonStreamer);
 
         // Add string params
         for (ConcurrentHashMap.Entry<String, String> entry : urlParams.entrySet()) {
@@ -548,13 +549,7 @@ public class RequestParams implements Serializable {
         for (ConcurrentHashMap.Entry<String, StreamWrapper> entry : streamParams.entrySet()) {
             StreamWrapper stream = entry.getValue();
             if (stream.inputStream != null) {
-                entity.addPart(entry.getKey(),
-                        StreamWrapper.newInstance(
-                                stream.inputStream,
-                                stream.name,
-                                stream.contentType,
-                                stream.autoClose)
-                );
+                entity.addPart(entry.getKey(), StreamWrapper.newInstance(stream.inputStream, stream.name, stream.contentType, stream.autoClose));
             }
         }
 
@@ -589,8 +584,7 @@ public class RequestParams implements Serializable {
         for (ConcurrentHashMap.Entry<String, StreamWrapper> entry : streamParams.entrySet()) {
             StreamWrapper stream = entry.getValue();
             if (stream.inputStream != null) {
-                entity.addPart(entry.getKey(), stream.name, stream.inputStream,
-                        stream.contentType);
+                entity.addPart(entry.getKey(), stream.name, stream.inputStream, stream.contentType);
             }
         }
 
@@ -636,8 +630,7 @@ public class RequestParams implements Serializable {
                 if (nestedKey instanceof String) {
                     Object nestedValue = map.get(nestedKey);
                     if (nestedValue != null) {
-                        params.addAll(getParamsList(key == null ? (String) nestedKey : String.format(Locale.US, "%s[%s]", key, nestedKey),
-                                nestedValue));
+                        params.addAll(getParamsList(key == null ? (String) nestedKey : String.format(Locale.US, "%s[%s]", key, nestedKey), nestedValue));
                     }
                 }
             }
@@ -694,11 +687,7 @@ public class RequestParams implements Serializable {
         }
 
         static StreamWrapper newInstance(InputStream inputStream, String name, String contentType, boolean autoClose) {
-            return new StreamWrapper(
-                    inputStream,
-                    name,
-                    contentType == null ? APPLICATION_OCTET_STREAM : contentType,
-                    autoClose);
+            return new StreamWrapper(inputStream, name, contentType == null ? APPLICATION_OCTET_STREAM : contentType, autoClose);
         }
     }
 }

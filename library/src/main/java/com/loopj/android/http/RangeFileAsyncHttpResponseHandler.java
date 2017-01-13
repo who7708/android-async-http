@@ -31,7 +31,6 @@ import cz.msebera.android.httpclient.StatusLine;
 import cz.msebera.android.httpclient.client.HttpResponseException;
 import cz.msebera.android.httpclient.client.methods.HttpUriRequest;
 
-
 public abstract class RangeFileAsyncHttpResponseHandler extends FileAsyncHttpResponseHandler {
     private static final String LOG_TAG = "RangeFileAsyncHttpRH";
 
@@ -53,11 +52,13 @@ public abstract class RangeFileAsyncHttpResponseHandler extends FileAsyncHttpRes
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() == HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE) {
                 //already finished
-                if (!Thread.currentThread().isInterrupted())
+                if (!Thread.currentThread().isInterrupted()) {
                     sendSuccessMessage(status.getStatusCode(), response.getAllHeaders(), null);
+                }
             } else if (status.getStatusCode() >= 300) {
-                if (!Thread.currentThread().isInterrupted())
+                if (!Thread.currentThread().isInterrupted()) {
                     sendFailureMessage(status.getStatusCode(), response.getAllHeaders(), null, new HttpResponseException(status.getStatusCode(), status.getReasonPhrase()));
+                }
             } else {
                 if (!Thread.currentThread().isInterrupted()) {
                     Header header = response.getFirstHeader(AsyncHttpClient.HEADER_CONTENT_RANGE);
@@ -99,8 +100,9 @@ public abstract class RangeFileAsyncHttpResponseHandler extends FileAsyncHttpRes
     }
 
     public void updateRequestHeaders(HttpUriRequest uriRequest) {
-        if (file.exists() && file.canWrite())
+        if (file.exists() && file.canWrite()) {
             current = file.length();
+        }
         if (current > 0) {
             append = true;
             uriRequest.setHeader("Range", "bytes=" + current + "-");

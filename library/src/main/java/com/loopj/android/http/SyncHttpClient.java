@@ -79,10 +79,7 @@ public class SyncHttpClient extends AsyncHttpClient {
     }
 
     @Override
-    protected RequestHandle sendRequest(DefaultHttpClient client,
-                                        HttpContext httpContext, HttpUriRequest uriRequest,
-                                        String contentType, ResponseHandlerInterface responseHandler,
-                                        Context context) {
+    protected RequestHandle sendRequest(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType, ResponseHandlerInterface responseHandler, Context context) {
         if (contentType != null) {
             uriRequest.addHeader(AsyncHttpClient.HEADER_CONTENT_TYPE, contentType);
         }

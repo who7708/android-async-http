@@ -49,11 +49,9 @@ class SimpleMultipartEntity implements HttpEntity {
 
     private static final String STR_CR_LF = "\r\n";
     private static final byte[] CR_LF = STR_CR_LF.getBytes();
-    private static final byte[] TRANSFER_ENCODING_BINARY =
-            ("Content-Transfer-Encoding: binary" + STR_CR_LF).getBytes();
+    private static final byte[] TRANSFER_ENCODING_BINARY = ("Content-Transfer-Encoding: binary" + STR_CR_LF).getBytes();
 
-    private final static char[] MULTIPART_CHARS =
-            "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+    private final static char[] MULTIPART_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     private final String boundary;
     private final byte[] boundaryLine;
@@ -97,7 +95,9 @@ class SimpleMultipartEntity implements HttpEntity {
     }
 
     public void addPartWithCharset(String key, String value, String charset) {
-        if (charset == null) charset = HTTP.UTF_8;
+        if (charset == null) {
+            charset = HTTP.UTF_8;
+        }
         addPart(key, value, "text/plain; charset=" + charset);
     }
 
@@ -117,8 +117,7 @@ class SimpleMultipartEntity implements HttpEntity {
         fileParts.add(new FilePart(key, file, normalizeContentType(type), customFileName));
     }
 
-    public void addPart(String key, String streamName, InputStream inputStream, String type)
-            throws IOException {
+    public void addPart(String key, String streamName, InputStream inputStream, String type) throws IOException {
 
         out.write(boundaryLine);
 
@@ -149,16 +148,14 @@ class SimpleMultipartEntity implements HttpEntity {
     }
 
     private byte[] createContentDisposition(String key) {
-        return (
-                AsyncHttpClient.HEADER_CONTENT_DISPOSITION +
-                        ": form-data; name=\"" + key + "\"" + STR_CR_LF).getBytes();
+        return (AsyncHttpClient.HEADER_CONTENT_DISPOSITION +
+                ": form-data; name=\"" + key + "\"" + STR_CR_LF).getBytes();
     }
 
     private byte[] createContentDisposition(String key, String fileName) {
-        return (
-                AsyncHttpClient.HEADER_CONTENT_DISPOSITION +
-                        ": form-data; name=\"" + key + "\"" +
-                        "; filename=\"" + fileName + "\"" + STR_CR_LF).getBytes();
+        return (AsyncHttpClient.HEADER_CONTENT_DISPOSITION +
+                ": form-data; name=\"" + key + "\"" +
+                "; filename=\"" + fileName + "\"" + STR_CR_LF).getBytes();
     }
 
     private void updateProgress(long count) {
@@ -184,9 +181,7 @@ class SimpleMultipartEntity implements HttpEntity {
 
     @Override
     public Header getContentType() {
-        return new BasicHeader(
-                AsyncHttpClient.HEADER_CONTENT_TYPE,
-                "multipart/form-data; boundary=" + boundary);
+        return new BasicHeader(AsyncHttpClient.HEADER_CONTENT_TYPE, "multipart/form-data; boundary=" + boundary);
     }
 
     @Override
@@ -230,15 +225,13 @@ class SimpleMultipartEntity implements HttpEntity {
     @Override
     public void consumeContent() throws IOException, UnsupportedOperationException {
         if (isStreaming()) {
-            throw new UnsupportedOperationException(
-                    "Streaming entity does not implement #consumeContent()");
+            throw new UnsupportedOperationException("Streaming entity does not implement #consumeContent()");
         }
     }
 
     @Override
     public InputStream getContent() throws IOException, UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                "getContent() is not supported. Use writeTo() instead.");
+        throw new UnsupportedOperationException("getContent() is not supported. Use writeTo() instead.");
     }
 
     private class FilePart {

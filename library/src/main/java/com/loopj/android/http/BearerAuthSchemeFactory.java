@@ -52,8 +52,7 @@ public class BearerAuthSchemeFactory implements AuthSchemeFactory {
         }
 
         @Override
-        public Header authenticate(Credentials credentials, HttpRequest request, HttpContext httpContext)
-                throws AuthenticationException {
+        public Header authenticate(Credentials credentials, HttpRequest request, HttpContext httpContext) throws AuthenticationException {
             CharArrayBuffer buffer = new CharArrayBuffer(32);
             buffer.append(AUTH.WWW_AUTH_RESP);
             buffer.append(": Bearer ");
