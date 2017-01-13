@@ -81,8 +81,9 @@ public class WaypointsActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        if (position >= 0 && position < samplesConfig.length)
+        if (position >= 0 && position < samplesConfig.length) {
             startActivity(new Intent(this, samplesConfig[position].targetClass));
+        }
     }
 
     private static class SampleConfig {

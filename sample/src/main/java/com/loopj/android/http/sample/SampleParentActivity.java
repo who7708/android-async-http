@@ -102,8 +102,9 @@ public abstract class SampleParentActivity extends Activity implements SampleInt
     private boolean enableLogging = true;
 
     protected static String throwableToString(Throwable t) {
-        if (t == null)
+        if (t == null) {
             return null;
+        }
 
         StringWriter sw = new StringWriter();
         t.printStackTrace(new PrintWriter(sw));
@@ -395,8 +396,9 @@ public abstract class SampleParentActivity extends Activity implements SampleInt
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setHomeAsUpEnabled() {
         if (Integer.valueOf(Build.VERSION.SDK) >= 11) {
-            if (getActionBar() != null)
+            if (getActionBar() != null) {
                 getActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
     }
 }

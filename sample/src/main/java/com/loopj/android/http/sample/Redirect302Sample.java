@@ -47,14 +47,17 @@ public class Redirect302Sample extends GetSample {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItemEnableRedirects = menu.findItem(MENU_ENABLE_REDIRECTS);
-        if (menuItemEnableRedirects != null)
+        if (menuItemEnableRedirects != null) {
             menuItemEnableRedirects.setChecked(enableRedirects);
+        }
         MenuItem menuItemEnableRelativeRedirects = menu.findItem(MENU_ENABLE_RELATIVE_REDIRECTs);
-        if (menuItemEnableRelativeRedirects != null)
+        if (menuItemEnableRelativeRedirects != null) {
             menuItemEnableRelativeRedirects.setChecked(enableRelativeRedirects);
+        }
         MenuItem menuItemEnableCircularRedirects = menu.findItem(MENU_ENABLE_CIRCULAR_REDIRECTS);
-        if (menuItemEnableCircularRedirects != null)
+        if (menuItemEnableCircularRedirects != null) {
             menuItemEnableCircularRedirects.setChecked(enableCircularRedirects);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 

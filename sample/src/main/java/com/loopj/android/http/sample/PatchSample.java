@@ -64,5 +64,4 @@ public class PatchSample extends SampleParentActivity {
         };
     }
 
-
 }

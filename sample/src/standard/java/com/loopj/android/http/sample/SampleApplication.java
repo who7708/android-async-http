@@ -18,7 +18,8 @@ public class SampleApplication extends Application {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setStrictMode() {
-        if (Integer.valueOf(Build.VERSION.SDK) > 3) {
+//        if (Integer.valueOf(Build.VERSION.SDK) > 3) {
+        if (Build.VERSION.SDK_INT > 3) {
             Log.d(LOG_TAG, "Enabling StrictMode policy over Sample application");
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll()

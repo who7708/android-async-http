@@ -101,8 +101,9 @@ public class RequestParamsDebug extends SampleParentActivity {
         Map<String, Set<String>> mapOfSets = new HashMap<>();
         for (String pair : pairs) {
             String[] kv = pair.split("=");
-            if (kv.length != 2)
+            if (kv.length != 2) {
                 continue;
+            }
             String key = kv[0].trim();
             String value = kv[1].trim();
             if ("array".equals(key)) {
